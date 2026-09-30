@@ -19,6 +19,8 @@ Claude se encarga de: generar una descripción breve, detectar las habilidades/t
 
 No hace falta tocar nada de `_layouts/`, `_data/` ni el resto de la estructura del sitio.
 
+**Sin emojis.** Notion suele meter emojis en los títulos y en el icono de los callouts (`<aside>🎯 ...`). Al publicar, se quitan todos: de los encabezados y de la línea-icono dentro de cada `<aside>`. Ninguna práctica debe llevar emojis.
+
 ### Índice lateral de las prácticas
 
 Todas las prácticas muestran una barra lateral de navegación por apartados, generada automáticamente por kramdown a partir de los encabezados del contenido (sin JavaScript de por medio para construir el índice, solo para moverlo a la barra lateral). Para que funcione, cada práctica debe incluir, justo después de la imagen/introducción y antes del primer `##`, estas dos líneas:

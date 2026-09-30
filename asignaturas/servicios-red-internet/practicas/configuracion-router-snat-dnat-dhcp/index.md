@@ -19,10 +19,9 @@ date: 2026-09-30
 * TOC
 {:toc}
 
-## 🎯 ¿Qué vamos a hacer en esta práctica?
+## ¿Qué vamos a hacer en esta práctica?
 
 <aside>
-🎯
 
 Vamos a montar, sobre máquinas virtuales (KVM/libvirt), un **router Linux** que conecta dos redes internas con el exterior. El router dará salida a internet a las máquinas internas (**SNAT**), publicará un servidor web interno (**DNAT**) y repartirá direcciones IP automáticamente (**DHCP** con Kea).
 
@@ -34,7 +33,7 @@ Esta práctica reproduce, a pequeña escala, lo que hace un router de borde en u
 2. **Acceso remoto seguro**: acceso SSH por clave pública, usando `ssh -A` para llegar a las máquinas internas a través del router sin dejar la clave privada en él (el router actúa de *jump host*).
 3. **Servicio DHCP**: instalar un servidor DHCP (**Kea**) en el router para las dos redes internas, capturar el intercambio `DISCOVER/OFFER/REQUEST/ACK`, estudiar cómo reaccionan un cliente Linux y uno Windows cuando el servidor se apaga o cambia su configuración, crear una reserva para el servidor web y, por último, pasar la IP pública del router a dinámica y adaptar el SNAT con *enmascaramiento*.
 
-### 🗺️ El escenario
+### El escenario
 
 ```
                INTERNET
@@ -70,13 +69,12 @@ Esta práctica reproduce, a pequeña escala, lo que hace un router de borde en u
 | Aislada | `br-red1` | 192.168.10.0/24 (sin DHCP) | router, web |
 | Muy aislada | `br-red2` | 172.16.0.0/16 | router, cliente1, cliente2 |
 
-### 🧭 Cómo está organizada la práctica
+### Cómo está organizada la práctica
 
 - **Parte 1 — direccionamiento estático**: bridges, interfaces, SSH con clave, *forwarding*, SNAT y DNAT, y resolución de problemas.
 - **Parte 2 — servidor DHCP**: ámbitos, concesiones, comportamiento de los clientes, reserva para el servidor web y SNAT con enmascaramiento.
 
 <aside>
-💡
 
 **En resumen**: entender **por qué** un router necesita *forwarding* + NAT para dar salida a redes internas, **por qué** hace falta DNAT para publicar un servicio interno y **cómo** DHCP automatiza la configuración de los clientes.
 
@@ -162,7 +160,6 @@ La interfaz ha sido asociada exitosamente
 ```
 
 <aside>
-⚠️
 
 Si al arrancar la máquina da error por `virtio0`, hay que ejecutar `virsh edit router` y cambiar las líneas donde ponga `virtio0` por `virtio`.
 
@@ -330,7 +327,6 @@ Get-NetFirewallRule -DisplayName "PingAllow"
 ```
 
 <aside>
-⚠️
 
 Ojo al copiar/pegar comandos de PowerShell: si las comillas se convierten en comillas "curvas" (" ") en vez de rectas ("), el comando se corta a mitad y crea una regla con un nombre incompleto (por ejemplo, solo "Allow"). Mejor escribir el comando directamente en la consola si da error de parámetro no encontrado.
 
@@ -479,7 +475,6 @@ Y lo dejo así (el objeto raíz es `Dhcp4`, como indica la documentación de Kea
 ```
 
 <aside>
-ℹ️
 
 `valid-lifetime` y `max-valid-lifetime` van en segundos: 1800 s = 30 minutos, la duración de concesión que pide el enunciado. El rango deja fuera la `172.16.0.1` (IP fija del router en esa red). `id` es obligatorio en esta versión de Kea (2.6.3) para identificar cada subred. Como DNS uso `192.168.100.1` (la puerta de enlace de `br-nat`), porque en la red del instituto no hay salida directa a un DNS público como `8.8.8.8`: esa IP la gestiona el `dnsmasq` interno de libvirt, que reenvía las consultas usando la resolución DNS real del anfitrión.
 
@@ -688,7 +683,6 @@ sudo systemctl restart kea-dhcp4-server
 ```
 
 <aside>
-ℹ️
 
 Con `valid-lifetime=120`, Kea calcula por defecto (como en las diapositivas): `T1 = 0,5×T3 = 60s` (RENEWING) y `T2 = 0,875×T3 = 105s` (REBINDING).
 
@@ -734,7 +728,6 @@ sudo tcpdump -i enp8s0 -n port 67 or port 68
     - **Linux/NetworkManager (cliente1)**: al expirar la concesión, NetworkManager **retira la IP** de la interfaz (me quedo sin IPv4) y el cliente vuelve al estado `INIT`, reiniciando el proceso completo desde `DHCPDISCOVER`. No implementa APIPA por defecto (eso lo haría un servicio aparte como `avahi-autoipd`, que no está activo).
 
 <aside>
-✅
 
 **Conclusión**: con el servidor apagado, ambos clientes conservan la IP hasta que expira la concesión (T3). La diferencia está en lo que pasa después: **Windows** se autoasigna una IP APIPA (`169.254.x.x`) y **Linux** se queda sin IPv4 y reinicia el proceso desde `DISCOVER`.
 
