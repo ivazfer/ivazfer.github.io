@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<div class="grid">
+  {% for asignatura in site.data.asignaturas %}
+    {% assign count = site.pages | where: "layout", "practica" | where: "subject_slug", asignatura.slug | size %}
+    <a class="card" href="{{ '/asignaturas/' | append: asignatura.slug | append: '/' | relative_url }}">
+      <h2>{{ asignatura.nombre }}</h2>
+      <span class="card-meta">{{ count }} práctica{% if count != 1 %}s{% endif %}</span>
+    </a>
+  {% endfor %}
+</div>

@@ -1,0 +1,15 @@
+title: Ismael Vázquez
+description: Portfolio de prácticas de ciclo formativo, organizado por asignatura
+lang: es
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+permalink: pretty
+
+exclude:
+  - inbox
+  - README.md
+  - CLAUDE.md

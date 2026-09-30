@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<a class="back-link" href="{{ '/' | relative_url }}">&larr; Todas las asignaturas</a>
+<h1>{{ page.subject_name }}</h1>
+
+{% assign practicas = site.pages | where: "layout", "practica" | where: "subject_slug", page.subject_slug %}
+
+{% if practicas.size == 0 %}
+  <p class="empty">Todavía no hay prácticas publicadas en esta asignatura.</p>
+{% else %}
+  <div class="practice-list">
+    {% for practica in practicas %}
+      <a class="practice-card" href="{{ practica.url | relative_url }}">
+        <h2>{{ practica.title }}</h2>
+        {% if practica.description %}<p>{{ practica.description }}</p>{% endif %}
+        {% if practica.skills %}
+          <div class="tags">
+            {% for skill in practica.skills %}<span class="tag">{{ skill }}</span>{% endfor %}
+          </div>
+        {% endif %}
+        {% if practica.date %}<span class="card-meta">{{ practica.date | date: "%d/%m/%Y" }}</span>{% endif %}
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}

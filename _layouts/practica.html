@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<a class="back-link" href="{{ '/asignaturas/' | append: page.subject_slug | append: '/' | relative_url }}">&larr; {{ page.subject_name }}</a>
+<article class="practica">
+  <h1>{{ page.title }}</h1>
+  {% if page.date %}<p class="card-meta">{{ page.date | date: "%d/%m/%Y" }}</p>{% endif %}
+  {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
+  {% if page.skills %}
+    <div class="tags">
+      {% for skill in page.skills %}<span class="tag">{{ skill }}</span>{% endfor %}
+    </div>
+  {% endif %}
+  <div class="practica-content">
+    {{ content }}
+  </div>
+</article>
