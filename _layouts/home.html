@@ -1,6 +1,34 @@
 ---
 layout: default
 ---
+{% assign total_practicas = site.pages | where: "layout", "practica" | size %}
+{% assign total_asignaturas = site.data.asignaturas | size %}
+
+<section class="home-intro">
+  <p class="lede">
+    Estudiante de Administración de Sistemas Informáticos en Red (ASIR) en el
+    IES Gonzalo Nazareno. Este portfolio recoge las prácticas del ciclo,
+    organizadas por asignatura.
+  </p>
+
+  <div class="contact-links">
+    <a class="contact-link" href="https://github.com/ivazfer" target="_blank" rel="noopener">GitHub</a>
+    <a class="contact-link" href="https://www.linkedin.com/in/ismael-v%C3%A1zquez-ferrero-491797310/" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="contact-link" href="mailto:contactoismaelvazquez@gmail.com">Email</a>
+  </div>
+
+  <div class="home-stats">
+    <div class="stat">
+      <span class="stat-number">{{ total_asignaturas }}</span>
+      <span class="stat-label">asignatura{% if total_asignaturas != 1 %}s{% endif %}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">{{ total_practicas }}</span>
+      <span class="stat-label">práctica{% if total_practicas != 1 %}s{% endif %} publicada{% if total_practicas != 1 %}s{% endif %}</span>
+    </div>
+  </div>
+</section>
+
 <div class="grid">
   {% for asignatura in site.data.asignaturas %}
     {% assign count = site.pages | where: "layout", "practica" | where: "subject_slug", asignatura.slug | size %}

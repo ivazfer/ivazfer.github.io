@@ -97,6 +97,59 @@ footer.site-footer {
 h1 { font-size: 1.9rem; margin: 0.5rem 0 1rem; letter-spacing: -0.01em; }
 h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
 
+.home-intro {
+  margin-bottom: 0.5rem;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.contact-link {
+  display: inline-block;
+  border: 2px solid var(--text);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.home-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.6rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
