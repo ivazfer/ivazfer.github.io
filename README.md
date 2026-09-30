@@ -18,3 +18,14 @@ Portfolio de prácticas del ciclo, organizado por asignatura. Sitio estático co
 Claude se encarga de: generar una descripción breve, detectar las habilidades/tecnologías tratadas, integrar la práctica en la web con las imágenes correctamente enlazadas, y hacer commit + push. GitHub Pages recompila solo en 1-2 minutos.
 
 No hace falta tocar nada de `_layouts/`, `_data/` ni el resto de la estructura del sitio.
+
+### Índice lateral de las prácticas
+
+Todas las prácticas muestran una barra lateral de navegación por apartados, generada automáticamente por kramdown a partir de los encabezados del contenido (sin JavaScript de por medio para construir el índice, solo para moverlo a la barra lateral). Para que funcione, cada práctica debe incluir, justo después de la imagen/introducción y antes del primer `##`, estas dos líneas:
+
+```
+* TOC
+{:toc}
+```
+
+Si se omiten, la práctica se publica igualmente pero sin barra lateral.

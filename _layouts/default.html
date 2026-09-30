@@ -21,7 +21,7 @@
     </a>
     <p class="site-subtitle">{{ site.description }}</p>
   </header>
-  <main>
+  <main{% if page.layout == 'practica' %} class="main-practica"{% endif %}>
     {{ content }}
   </main>
   <footer class="site-footer">

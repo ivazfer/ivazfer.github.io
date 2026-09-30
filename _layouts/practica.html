@@ -11,7 +11,56 @@ layout: default
       {% for skill in page.skills %}<span class="tag">{{ skill }}</span>{% endfor %}
     </div>
   {% endif %}
-  <div class="practica-content">
-    {{ content }}
+  <div class="practica-layout">
+    <nav class="practica-toc" id="practica-toc" aria-label="Índice de la práctica"></nav>
+    <div class="practica-content" id="practica-content">
+      {{ content }}
+    </div>
   </div>
 </article>
+
+<script>
+(function () {
+  var toc = document.getElementById('markdown-toc');
+  var sidebar = document.getElementById('practica-toc');
+  var layout = document.querySelector('.practica-layout');
+  if (!toc || !sidebar) {
+    if (sidebar) sidebar.remove();
+    if (layout) layout.classList.add('no-toc');
+    return;
+  }
+
+  var details = document.createElement('details');
+  details.open = true;
+  var summary = document.createElement('summary');
+  summary.textContent = 'En esta práctica';
+  details.appendChild(summary);
+  details.appendChild(toc);
+  sidebar.appendChild(details);
+
+  var links = toc.querySelectorAll('a');
+  if (!links.length) return;
+
+  var targets = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if (target) targets.push(target);
+  });
+
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+
+  var setActive = function (id) {
+    links.forEach(function (a) {
+      a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+    });
+  };
+
+  var observer = new IntersectionObserver(function (entries) {
+    var visible = entries.filter(function (e) { return e.isIntersecting; });
+    if (visible.length) setActive(visible[0].target.id);
+  }, { rootMargin: '-15% 0px -70% 0px' });
+
+  targets.forEach(function (t) { observer.observe(t); });
+})();
+</script>
