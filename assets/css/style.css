@@ -1,25 +1,27 @@
 :root {
   --bg: #ffffff;
-  --text: #1a1a1a;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --accent: #2563eb;
-  --tag-bg: #eff6ff;
-  --tag-text: #1e40af;
-  --card-bg: #fafafa;
+  --text: #111111;
+  --muted: #6b6b6b;
+  --border: #1a1a1a;
+  --border-soft: #e2e2e2;
+  --accent: #5b7291;
+  --tag-bg: #111111;
+  --tag-text: #ffffff;
+  --card-bg: #ffffff;
   --max-width: 860px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #14161a;
-    --text: #e8e8e8;
-    --muted: #9aa1ac;
-    --border: #2a2d33;
-    --accent: #60a5fa;
-    --tag-bg: #1b2436;
-    --tag-text: #93c5fd;
-    --card-bg: #1a1d22;
+    --bg: #0d0d0d;
+    --text: #f5f5f5;
+    --muted: #9a9a9a;
+    --border: #f5f5f5;
+    --border-soft: #2a2a2a;
+    --accent: #7f97b8;
+    --tag-bg: #f5f5f5;
+    --tag-text: #0d0d0d;
+    --card-bg: #161616;
   }
 }
 
@@ -36,25 +38,51 @@ body {
 header.site-header {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2.5rem 1.25rem 1rem;
+  padding: 2.5rem 1.25rem 1.25rem;
+  border-bottom: 3px solid var(--text);
 }
 
-.site-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text);
+.site-title-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   text-decoration: none;
 }
 
+.site-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 2px solid var(--text);
+}
+
+.site-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.site-title::after {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.4rem;
+  background: var(--accent);
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
 .site-subtitle {
-  margin: 0.35rem 0 0;
+  margin: 0.4rem 0 0;
   color: var(--muted);
 }
 
 main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0.5rem 1.25rem 3rem;
+  padding: 1.5rem 1.25rem 3rem;
 }
 
 footer.site-footer {
@@ -63,32 +91,42 @@ footer.site-footer {
   padding: 1.5rem 1.25rem 3rem;
   color: var(--muted);
   font-size: 0.85rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-soft);
 }
 
-h1 { font-size: 1.8rem; margin: 0.5rem 0 1rem; }
+h1 { font-size: 1.9rem; margin: 0.5rem 0 1rem; letter-spacing: -0.01em; }
 h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .card, .practice-card {
   display: block;
-  border: 1px solid var(--border);
+  border: 2px solid var(--text);
   background: var(--card-bg);
   border-radius: 10px;
   padding: 1.1rem 1.2rem;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.15s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.15s ease;
 }
 
 .card:hover, .practice-card:hover {
   border-color: var(--accent);
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+
+.card:active, .practice-card:active {
+  transform: translateY(-1px) scale(1);
+  box-shadow: 2px 2px 0 var(--accent);
+  transition-duration: 0.08s;
 }
 
 .card-meta {
@@ -124,7 +162,7 @@ h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
   font-size: 0.78rem;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .back-link {
@@ -132,6 +170,7 @@ h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
   color: var(--accent);
   text-decoration: none;
   font-size: 0.9rem;
+  font-weight: 600;
   margin-bottom: 1rem;
 }
 
@@ -151,19 +190,20 @@ h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
 .practica-content img {
   max-width: 100%;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--text);
 }
 
 .practica-content pre {
   background: var(--card-bg);
-  border: 1px solid var(--border);
+  border: 2px solid var(--text);
   border-radius: 8px;
   padding: 1rem;
   overflow-x: auto;
 }
 
 .practica-content code {
-  background: var(--card-bg);
+  background: var(--tag-bg);
+  color: var(--tag-text);
   padding: 0.15rem 0.35rem;
   border-radius: 4px;
   font-size: 0.9em;
@@ -171,7 +211,12 @@ h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
 
 .practica-content pre code {
   background: none;
+  color: inherit;
   padding: 0;
+}
+
+.practica-content a {
+  color: var(--accent);
 }
 
 .practica-content table {
@@ -181,7 +226,7 @@ h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
 }
 
 .practica-content th, .practica-content td {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   padding: 0.5rem 0.7rem;
   text-align: left;
 }

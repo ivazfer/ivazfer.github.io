@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <clipPath id="c"><circle cx="256" cy="256" r="244"/></clipPath>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e293b"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- fondo -->
+  <circle cx="256" cy="256" r="244" fill="url(#bg)"/>
+
+  <g clip-path="url(#c)">
+    <!-- cuello y camiseta -->
+    <rect x="222" y="370" width="68" height="60" rx="14" fill="#c98f69"/>
+    <path d="M40 520 C 60 420, 160 398, 256 398 C 352 398, 452 420, 472 520 Z" fill="#64748b"/>
+    <path d="M216 398 Q 256 440 296 398 Z" fill="#c98f69"/>
+
+    <!-- orejas -->
+    <circle cx="136" cy="282" r="26" fill="#d9a07a"/>
+    <circle cx="376" cy="282" r="26" fill="#d9a07a"/>
+
+    <!-- pelo (parte trasera, rizos) -->
+    <g fill="#1a1412">
+      <circle cx="160" cy="185" r="44"/>
+      <circle cx="212" cy="140" r="52"/>
+      <circle cx="275" cy="128" r="54"/>
+      <circle cx="335" cy="150" r="50"/>
+      <circle cx="372" cy="200" r="36"/>
+      <circle cx="140" cy="225" r="28"/>
+    </g>
+
+    <!-- cara (sin perilla) -->
+    <ellipse cx="256" cy="275" rx="122" ry="132" fill="#d9a07a"/>
+
+    <!-- flequillo -->
+    <path d="M136 235 C 128 165, 185 132, 256 132 C 327 132, 384 165, 376 235 C 352 192, 322 178, 256 182 C 190 178, 160 192, 136 235 Z" fill="#1a1412"/>
+
+    <!-- cejas -->
+    <path d="M178 232 Q 210 216 244 228" fill="none" stroke="#1a1412" stroke-width="12" stroke-linecap="round"/>
+    <path d="M270 216 Q 302 196 336 214" fill="none" stroke="#1a1412" stroke-width="12" stroke-linecap="round"/>
+
+    <!-- gafas estilo "deal with it" con terminal -->
+    <rect x="164" y="244" width="86" height="54" rx="10" fill="#0a0a0a"/>
+    <rect x="262" y="244" width="86" height="54" rx="10" fill="#0a0a0a"/>
+    <rect x="248" y="256" width="16" height="10" fill="#0a0a0a"/>
+    <path d="M164 262 L 128 256 M348 262 L 384 256" stroke="#0a0a0a" stroke-width="10" stroke-linecap="round"/>
+    <!-- >_ en la lente izquierda -->
+    <polyline points="184,258 204,271 184,284" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="212" y1="286" x2="234" y2="286" stroke="#22c55e" stroke-width="8" stroke-linecap="round"/>
+    <!-- brillo lente derecha -->
+    <path d="M290 250 L 316 250 L 300 292 L 274 292 Z" fill="#ffffff" opacity="0.18"/>
+
+    <!-- nariz -->
+    <path d="M256 296 Q 244 322 264 324" fill="none" stroke="#a9704d" stroke-width="7" stroke-linecap="round"/>
+
+    <!-- sonrisa pícara -->
+    <path d="M204 352 Q 262 392 322 342" fill="none" stroke="#5a2f22" stroke-width="10" stroke-linecap="round"/>
+    <path d="M322 342 Q 332 340 336 330" fill="none" stroke="#5a2f22" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <!-- aro verde (guiño al #OpenToWork) -->
+  <circle cx="256" cy="256" r="244" fill="none" stroke="#22c55e" stroke-width="14"/>
+</svg>
