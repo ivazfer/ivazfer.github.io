@@ -219,6 +219,18 @@ h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
   color: var(--accent);
 }
 
+.practica-content h2#indice + ul {
+  background: var(--card-bg);
+  border: 2px solid var(--text);
+  border-radius: 8px;
+  padding: 1rem 1.5rem 1rem 2.2rem;
+  margin: 0.5rem 0 2rem;
+}
+
+.practica-content h2#indice + ul li {
+  margin: 0.25rem 0;
+}
+
 .practica-content table {
   border-collapse: collapse;
   width: 100%;

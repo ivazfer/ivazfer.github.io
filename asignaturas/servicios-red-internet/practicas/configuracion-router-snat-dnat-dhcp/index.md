@@ -79,9 +79,34 @@ Esta práctica reproduce, a pequeña escala, lo que hace un router de borde en u
 
 </aside>
 
+## Índice
+{: #indice}
+
+- [Parte 1](#parte-1)
+  - [1. Configuración de red de las máquinas](#p1-1)
+  - [2. Habilitar forwarding IP en el router](#p1-2)
+  - [3. Reglas iptables en el router (SNAT y DNAT)](#p1-3)
+  - [4. Permitir ping (ICMP) hacia Windows](#p1-4)
+  - [5. Resolución de problemas](#p1-5)
+- [Respuestas a las preguntas de la Parte 1](#respuestas-parte-1)
+- [Parte 2](#parte-2)
+  - [1. Instalación del servidor DHCP](#p2-1)
+  - [2. Configuración dinámica de los clientes](#p2-2)
+  - [3. Captura de la concesión con tcpdump](#p2-3)
+  - [4. Apagado del servidor DHCP con concesión activa](#p2-4)
+  - [5. Cambio de configuración con concesión activa](#p2-5)
+  - [6. Nuevo ámbito para la red aislada](#p2-6)
+  - [7. Reserva para el servidorWeb](#p2-7)
+  - [8. Configuración dinámica del servidorWeb](#p2-8)
+  - [9. Router con direccionamiento dinámico en la red NAT](#p2-9)
+  - [10. Enmascaramiento en las reglas SNAT](#p2-10)
+- [Conclusiones y problemas encontrados](#conclusiones)
+
 ## Parte 1
+{: #parte-1}
 
 ### 1. Configuración de red de las máquinas
+{: #p1-1}
 
 Comprobación de que las máquinas conectadas en distintas redes hacen ping entre ellas (se usa una de las máquinas conectadas a la red **muy aislada**).
 
@@ -256,6 +281,7 @@ Para meter la clave pública en los servidores uso `ssh-copy-id`, y entro en el 
     - `ssh-copy-id 172.16.0.2`
 
 ### 2. Habilitar forwarding IP en el router (persistente)
+{: #p1-2}
 
 Para que el router reenvíe tráfico entre sus distintas interfaces (por ejemplo, para hacer ping entre máquinas de `red_aislada` y `red_muy_aislada`), hace falta activar el bit de IP forwarding. En Debian 13 no existe `/etc/sysctl.conf` por defecto, así que se usa un fichero propio en `/etc/sysctl.d/`:
 
@@ -273,6 +299,7 @@ sysctl net.ipv4.ip_forward
 Debe devolver `1`. Al estar en `/etc/sysctl.d/`, `systemd-sysctl.service` lo aplica automáticamente en cada arranque, por lo que es persistente sin necesitar nada más.
 
 ### 3. Reglas iptables en el router (SNAT y DNAT)
+{: #p1-3}
 
 He creado el script `/etc/reglas.sh` en el router, le he dado permisos de ejecución y lo llamo con `up` desde `/etc/network/interfaces`, así las reglas se aplican en cada arranque:
 
@@ -309,6 +336,7 @@ iptables -t nat -A PREROUTING -d 172.16.0.1 -p tcp --dport 80 -i enp8s0 -j DNAT 
 El enunciado pregunta si es necesario usar *enmascaramiento*. Aquí no: la IP del router en la red NAT (`192.168.100.2`) es **fija**, así que basta con `SNAT --to 192.168.100.2`. El *enmascaramiento* (`MASQUERADE`) solo hace falta cuando esa IP de salida es dinámica y puede cambiar.
 
 ### 4. Permitir ping (ICMP) hacia Windows (cliente2)
+{: #p1-4}
 
 cliente2 es un Windows 11 en versión Tiny (sin navegador ni apenas herramientas). Aunque el resto de la red, el enrutamiento y las reglas de `iptables` del router estaban bien, el ping desde `web` (Ubuntu) hacia `172.16.0.3` no respondía. El motivo es que **el Firewall de Windows bloquea las peticiones ICMP entrantes por defecto**, algo que no ocurre en las máquinas Linux.
 
@@ -340,6 +368,7 @@ ping -c3 172.16.0.3
 ```
 
 ### 5. Resolución de problemas
+{: #p1-5}
 
 #### 5.1 SSH a cliente1 (172.16.0.2) se queda colgado
 
@@ -390,6 +419,7 @@ Debe salir `gssapiauthentication no`, y `ssh 172.16.0.2` desde el router entra a
 - Es mejor usar `00-custom.conf` que editar `50-redhat.conf`, porque una actualización de `openssh-server` podría restaurar este último.
 
 ## Respuestas a las preguntas de la Parte 1
+{: #respuestas-parte-1}
 
 **¿Para qué sirve `ssh -A` al acceder al router y desde ahí a las máquinas internas? ¿Qué problema de seguridad evita frente a copiar tu clave privada dentro del router?**
 
@@ -402,10 +432,12 @@ Si en vez de esto copiara la clave privada al router, cualquiera con acceso al r
 Sí, pero solo desde el propio host (el hipervisor), no desde "el exterior" real. El host también está conectado al bridge `br-red1` (es el propio bridge el que crea la interfaz en el host), así que tiene una IP dentro de esa red y puede llegar directamente al Servidor Web sin pasar por las reglas del router. Para cualquier otra máquina fuera del host, en cambio, `br-red1` no tiene salida ni ruta propia: la única forma de llegar es a través de la regla DNAT del router, que redirige el puerto 80 de su IP hacia `192.168.10.3`.
 
 ## Parte 2
+{: #parte-2}
 
 **Vamos a seguir trabajando con el escenario de la parte anterior.**
 
 ### 1. Instalación del servidor DHCP (red muy aislada)
+{: #p2-1}
 
 **Instala un servidor DHCP en la máquina** `router.tunombre.org` **con un ámbito que tenga las siguientes características:**
 
@@ -505,6 +537,7 @@ sudo journalctl -u kea-dhcp4-server -n 50 --no-pager
 ```
 
 ### 2. Configuración dinámica de los clientes
+{: #p2-2}
 
 **Configura las máquinas cliente1 y cliente2 para que tomen configuración de red dinámica y puedas probar que realmente está funcionando el servidor.**
 
@@ -588,6 +621,7 @@ He usado el comando `column -s, -t /var/lib/kea/kea-leases4.csv | less -S`
 ```
 
 ### 3. Captura de la concesión con tcpdump
+{: #p2-3}
 
 **Realizar una captura, desde el servidor usando** `tcpdump`**, de los cuatro paquetes que corresponden a una concesión:** `DISCOVER`**,** `OFFER`**,** `REQUEST`**,** `ACK`**.**
 
@@ -665,6 +699,7 @@ tcpdump: listening on enp8s0, link-type EN10MB (Ethernet), snapshot length 26214
 ```
 
 ### 4. Apagado del servidor DHCP con concesión activa
+{: #p2-4}
 
 **Para hacer esta prueba configura un tiempo de concesión bajo (cuando termines, vuelve a poner los 30 minutos). Los clientes toman una configuración, y a continuación apagamos el servidor DHCP. Comprueba qué ocurre en el cliente windows y en el cliente linux mientras dura la concesión y cuando intentan renovarla, y razona el motivo.**
 
@@ -983,6 +1018,7 @@ C:\Windows\System32>
 ```
 
 ### 5. Cambio de la configuración del servidor con concesión activa
+{: #p2-5}
 
 **Los clientes toman una configuración y, con la concesión activa, cambiamos la configuración del servidor DHCP (por ejemplo el rango). Comprueba qué ocurre en el cliente windows y en el cliente linux mientras dura la concesión y cuando intentan renovarla, y razona el motivo.**
 
@@ -1177,6 +1213,7 @@ sudo systemctl restart kea-dhcp4-server
 ```
 
 ### 6. Nuevo ámbito para la red aislada
+{: #p2-6}
 
 **Actualmente el servidorWeb tiene una ip fija para que se pueda acceder a ese servicio. Configura un nuevo ámbito en el servidor DHCP con las siguientes características:**
 
@@ -1232,6 +1269,7 @@ Así queda el fichero de configuración
 ```
 
 ### 7. Reserva para el servidorWeb
+{: #p2-7}
 
 **Crea una reserva en el servidor para que el servidorWeb tenga la misma IP que había configurado de forma estática.**
 
@@ -1300,6 +1338,7 @@ Nos quedaria asi el fichero para la configuración DHCP del servidor web
 ```
 
 ### 8. Configuración dinámica del servidorWeb
+{: #p2-8}
 
 **Modifica la configuración de red del servidorWeb para que configure la red de forma dinámica.**
 
@@ -1337,6 +1376,7 @@ ismael@web:~$
 ```
 
 ### 9. Router con direccionamiento dinámico en la red NAT
+{: #p2-9}
 
 **Conecta la máquina router a una red de tipo NAT con servidor DHCP (por ejemplo la** `default`**). Configura la interfaz correspondiente para que tome direccionamiento dinámico. Puedes cambiar la interfaz conectada a br-nat o añadir una nueva; al final solo debe haber una ruta por defecto, por la interfaz que toma la IP por DHCP.**
 
@@ -1376,6 +1416,7 @@ default via 192.168.122.1 dev enp1s0 proto dhcp src 192.168.122.185 metric 1002
 ```
 
 ### 10. Enmascaramiento en las reglas SNAT
+{: #p2-10}
 
 **Recuerda que si la interfaz "pública" de un router toma direccionamiento dinámico, las reglas de SNAT deben usar la técnica de enmascaramiento. Modifica las reglas de SNAT para que el escenario siga funcionando.**
 
@@ -1429,6 +1470,7 @@ ismael@router:~$
 ```
 
 ## Conclusiones y problemas encontrados
+{: #conclusiones}
 
 - **Forwarding + NAT**: sin `net.ipv4.ip_forward=1` y sin SNAT/MASQUERADE el router no da salida a las redes internas; sin DNAT no se puede publicar el servidor web.
 - **SNAT vs MASQUERADE**: con IP pública fija basta `SNAT --to`; con IP dinámica (DHCP) hay que usar `MASQUERADE`.
