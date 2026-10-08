@@ -362,7 +362,12 @@ main.main-practica {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 0.75rem 0.25rem;
+  min-height: 0;
+  padding: 0.4rem 0.6rem;
+}
+
+.code-block-header:empty {
+  display: none;
 }
 
 .code-lang {
@@ -376,8 +381,9 @@ main.main-practica {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.9rem;
-  height: 1.9rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-left: auto;
   background: none;
   border: none;
   border-radius: 6px;
@@ -431,7 +437,7 @@ main.main-practica {
   border: none;
   border-radius: 0;
   margin: 0;
-  padding: 0.25rem 1rem 1rem;
+  padding: 0 1rem 0.85rem;
   overflow-x: auto;
   font-size: 0.95rem;
   line-height: 1.6;

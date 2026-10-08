@@ -70,11 +70,11 @@ layout: default
   var checkIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   blocks.forEach(function (pre) {
-    var codeEl = pre.querySelector('code');
+    var langHolder = pre.closest('[class*="language-"]') || pre.querySelector('code');
     var lang = '';
-    if (codeEl) {
-      var match = codeEl.className.match(/language-(\w+)/);
-      if (match) lang = match[1];
+    if (langHolder) {
+      var match = langHolder.className.match(/language-(\w+)/);
+      if (match && match[1] !== 'plaintext') lang = match[1];
     }
 
     var wrapper = document.createElement('div');
