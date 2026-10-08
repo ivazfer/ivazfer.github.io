@@ -63,4 +63,41 @@ layout: default
 
   targets.forEach(function (t) { observer.observe(t); });
 })();
+
+(function () {
+  var blocks = document.querySelectorAll('.practica-content pre');
+  var copyIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5.5" y="5.5" width="8.5" height="8.5" rx="1.5"/><path d="M2.5 10.5v-7a1.5 1.5 0 0 1 1.5-1.5h7" stroke-linecap="round"/></svg>';
+  var checkIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  blocks.forEach(function (pre) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    pre.parentNode.insertBefore(wrapper, pre);
+
+    var header = document.createElement('div');
+    header.className = 'code-block-header';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.innerHTML = copyIcon + '<span>Copiar</span>';
+    btn.setAttribute('aria-label', 'Copiar código');
+    header.appendChild(btn);
+
+    wrapper.appendChild(header);
+    wrapper.appendChild(pre);
+
+    btn.addEventListener('click', function () {
+      var text = pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.innerHTML = checkIcon + '<span>Copiado</span>';
+        btn.classList.add('is-copied');
+        setTimeout(function () {
+          btn.innerHTML = copyIcon + '<span>Copiar</span>';
+          btn.classList.remove('is-copied');
+        }, 1500);
+      });
+    });
+  });
+})();
 </script>
