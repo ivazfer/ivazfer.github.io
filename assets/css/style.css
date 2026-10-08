@@ -347,91 +347,14 @@ main.main-practica {
 .practica-content img {
   max-width: 100%;
   border-radius: 8px;
-  border: 1px solid var(--border-soft);
-}
-
-.code-block {
-  border: 1px solid var(--border-soft);
-  border-radius: 10px;
-  background: var(--card-bg);
-  margin: 1rem 0;
-  overflow: hidden;
-}
-
-.code-block-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 0.75rem 0.25rem;
-}
-
-.code-lang {
-  color: var(--muted);
-  font-size: 0.75rem;
-  text-transform: lowercase;
-}
-
-.code-copy-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  background: none;
-  border: none;
-  border-radius: 6px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.code-copy-btn svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  flex-shrink: 0;
-}
-
-.code-copy-btn:hover,
-.code-copy-btn:focus-visible {
-  background: var(--border-soft);
-  color: var(--text);
-}
-
-.code-copy-btn.is-copied {
-  color: var(--accent);
-}
-
-.code-copy-btn::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 130%;
-  right: 0;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.2rem 0.5rem;
-  border-radius: 5px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-2px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-
-.code-copy-btn:hover::after,
-.code-copy-btn:focus-visible::after {
-  opacity: 1;
-  transform: translateY(0);
+  border: 2px solid var(--text);
 }
 
 .practica-content pre {
-  background: none;
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  padding: 0.25rem 1rem 1rem;
+  background: var(--card-bg);
+  border: 2px solid var(--text);
+  border-radius: 8px;
+  padding: 1rem;
   overflow-x: auto;
 }
 
