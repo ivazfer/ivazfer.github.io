@@ -347,15 +347,58 @@ main.main-practica {
 .practica-content img {
   max-width: 100%;
   border-radius: 8px;
-  border: 2px solid var(--text);
+  border: 1px solid var(--border-soft);
+}
+
+.code-block {
+  position: relative;
+  margin: 1rem 0;
 }
 
 .practica-content pre {
   background: var(--card-bg);
-  border: 2px solid var(--text);
+  border: 1px solid var(--border-soft);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 2.5rem 1rem 1rem;
   overflow-x: auto;
+  margin: 0;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.72rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.code-copy-btn svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+}
+
+.code-copy-btn:hover {
+  opacity: 1;
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.code-copy-btn.is-copied {
+  color: var(--accent);
+  border-color: var(--accent);
+  opacity: 1;
 }
 
 .practica-content code {
